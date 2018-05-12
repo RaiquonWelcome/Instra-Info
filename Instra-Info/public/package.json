@@ -1,0 +1,16 @@
+{
+  "name": "wikiapi",
+  "version": "1.0.0",
+  "description": "An app that allows the user to get wikipedia and spotify info  on any specific instrument ",
+  "main": "server.js",
+  "scripts": {
+    "test": "node server.js",
+    "start": "node server.js"
+  },
+  "author": "Raiquon Welcome",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.16.3",
+    "morgan": "^1.9.0"
+  }
+}
