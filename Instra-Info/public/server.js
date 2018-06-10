@@ -4,6 +4,8 @@ const app = express();
 
 const PORT = process.env.PORT || 3000
 const ROOT_DIR = '/public'; //root directory for our static pages
+const https = require('https');
+let instrument; //holds instrument user wantst to search
 
 //Middleware
 //use morgan logger to keep request log files
@@ -29,8 +31,26 @@ app.get('/index.html', (request, response) =>{
 app.get('/action', (request, response) =>{
   console.log('INSTRUMENT: ' + request.query['instrument']);
   //TODO connect to Wiki API
+  instrument = request.query['instrument'];
 
+  https.get('https://en.wikipedia.org/w/api.php?action=opensearch&format=json&search=' + instrument, (response) => {
+    let chunkData = '';
+    let data;
+    response.on('data', function (chunk) {
+      chunkData += chunk
+    })
+    response.on('end', function () {
+      data = JSON.parse(chunkData);
+      console.log(data);
+    })
+
+
+
+
+  })
 })
+
+
 
 
 //start server
