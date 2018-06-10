@@ -29,25 +29,29 @@ app.get('/index.html', (request, response) =>{
 })
 
 app.get('/action', (request, response) =>{
-  console.log('INSTRUMENT: ' + request.query['instrument']);
-  //TODO connect to Wiki API
-  instrument = request.query['instrument'];
+  let data;
+  let instrument = request.query['instrument'];
 
-  https.get('https://en.wikipedia.org/w/api.php?action=opensearch&format=json&search=' + instrument, (response) => {
+  console.log('INSTRUMENT: ' + request.query['instrument']);
+
+  https.get('https://en.wikipedia.org/w/api.php?action=query&prop=revisions&rvprop=content&format=json&titles=' + instrument, (response) => {
     let chunkData = '';
-    let data;
+
     response.on('data', function (chunk) {
       chunkData += chunk
     })
     response.on('end', function () {
       data = JSON.parse(chunkData);
-      console.log(data);
+      let page = data.query.pages;
+      let pageId = Object.keys(data.query.pages)[0];
+      console.log(pageId);
+      let content = page[pageId].revisions[0]['*'];
+      console.log(content);
     })
 
-
-
-
   })
+
+
 })
 
 
